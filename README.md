@@ -5,6 +5,9 @@
 
 ## 📈 Executive Summary (経営要約)
 
+<img width="1920" height="1937" alt="screencapture-localhost-8501-2026-06-24-17_15_03" src="https://github.com/user-attachments/assets/8ba9bf16-4538-49f6-b34e-364338207103" />
+
+
 ### 🇺🇸 English
 This project delivers a production-grade analytics foundation and executive decision sandbox tailored for a **Global Two-Sided Live Event Marketplace Platform ($1B+ Revenue)**. 
 
