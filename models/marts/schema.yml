@@ -1,0 +1,181 @@
+version: 2
+
+models:
+  - name: fct_event_marketplace_liquidity_daily
+    description: >
+      Executive and AI-ready fact table for event-level marketplace liquidity,
+      perishable inventory risk, demand pressure, supply pressure, and dynamic pricing signals.
+
+    columns:
+      - name: event_market_snapshot_key
+        description: Unique grain key for event, market, and snapshot date.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: snapshot_date
+        description: Listing snapshot date.
+        data_tests:
+          - not_null
+
+      - name: event_id
+        description: Event identifier.
+        data_tests:
+          - not_null
+
+      - name: event_date
+        description: Event date.
+        data_tests:
+          - not_null
+
+      - name: market_country_code
+        description: Market country code.
+        data_tests:
+          - not_null
+
+      - name: days_to_event
+        description: Days remaining until the event.
+        data_tests:
+          - not_null
+
+      - name: active_listing_count
+        description: Count of active listings.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: tickets_available
+        description: Available ticket supply.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: avg_list_price_usd
+        description: Average active listing price in USD.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: min_list_price_usd
+        description: Minimum active listing price in USD.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: max_list_price_usd
+        description: Maximum active listing price in USD.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: tickets_sold_28d
+        description: Tickets sold in the trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: gross_ticket_value_usd_28d
+        description: Gross ticket value in trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: platform_fee_revenue_usd_28d
+        description: Platform fee revenue in trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: completed_order_count_28d
+        description: Completed order count in trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: unique_buyers_28d
+        description: Unique buyers in trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: avg_daily_tickets_sold_28d
+        description: Average daily ticket sales over trailing 28 days.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: sell_through_rate_28d
+        description: Tickets sold divided by tickets sold plus remaining supply.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: days_of_supply
+        description: Remaining available tickets divided by average daily ticket sales.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: platform_take_rate_28d
+        description: Platform fee revenue divided by gross ticket value.
+        data_tests:
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: time_to_event_decay_factor
+        description: Decay factor representing urgency as the event approaches.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: demand_pressure_score
+        description: Composite score for buyer demand pressure.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: supply_pressure_score
+        description: Composite score for inventory oversupply pressure.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: "between 0 and 1"
+
+      - name: marketplace_liquidity_segment
+        description: Executive classification of marketplace health.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - supply_constrained
+                - perishable_inventory_risk
+                - high_demand_low_supply
+                - oversupplied
+                - balanced
+
+      - name: dynamic_pricing_signal
+        description: Recommended pricing or marketplace action.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - increase_supply
+                - discount_to_clear
+                - raise_price_or_promote_seller_supply
+                - improve_buyer_demand_generation
+                - review_price_competitiveness
+                - maintain
+
+      - name: mart_generated_at
+        description: Timestamp when the mart was generated.
+        data_tests:
+          - not_null

@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: marketplace
+    description: Raw operational data from a global two-sided live event marketplace platform.
+    database: "{{ target.project }}"
+    schema: raw_marketplace
+
+    tables:
+      - name: ticket_listings
+        description: Raw ticket listing snapshots from sellers and inventory partners.
+        loaded_at_field: _ingested_at
+        freshness:
+          warn_after:
+            count: 12
+            period: hour
+          error_after:
+            count: 24
+            period: hour
+
+      - name: ticket_order_lines
+        description: Raw ticket transaction line items from buyer purchases.
+        loaded_at_field: _ingested_at
+        freshness:
+          warn_after:
+            count: 6
+            period: hour
+          error_after:
+            count: 18
+            period: hour

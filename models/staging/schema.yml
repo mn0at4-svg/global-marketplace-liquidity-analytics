@@ -1,0 +1,138 @@
+version: 2
+
+models:
+  - name: stg_marketplace__ticket_listings
+    description: Cleaned ticket listing snapshot data for marketplace supply analysis.
+    columns:
+      - name: listing_snapshot_key
+        description: Unique key for a listing snapshot.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: listing_id
+        description: Listing identifier.
+        data_tests:
+          - not_null
+
+      - name: event_id
+        description: Event identifier.
+        data_tests:
+          - not_null
+
+      - name: seller_id
+        description: Seller identifier.
+        data_tests:
+          - not_null
+
+      - name: snapshot_date
+        description: Date of listing snapshot.
+        data_tests:
+          - not_null
+
+      - name: event_date
+        description: Date of the live event.
+        data_tests:
+          - not_null
+
+      - name: listing_status
+        description: Normalized listing status.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - active
+                - inactive
+                - sold
+                - removed
+                - expired
+
+      - name: quantity_listed
+        description: Number of tickets originally listed.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: quantity_available
+        description: Number of tickets available at snapshot time.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: list_price_usd
+        description: Listed ticket price in USD.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: stg_marketplace__ticket_order_lines
+    description: Cleaned ticket purchase line item data for marketplace demand analysis.
+    columns:
+      - name: order_line_id
+        description: Unique order line identifier.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: order_id
+        description: Order identifier.
+        data_tests:
+          - not_null
+
+      - name: event_id
+        description: Event identifier.
+        data_tests:
+          - not_null
+
+      - name: buyer_id
+        description: Buyer identifier.
+        data_tests:
+          - not_null
+
+      - name: order_date
+        description: Date of purchase.
+        data_tests:
+          - not_null
+
+      - name: order_status
+        description: Normalized order status.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                - completed
+                - cancelled
+                - refunded
+                - chargeback
+                - pending
+
+      - name: quantity_purchased
+        description: Quantity of tickets purchased.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: gross_ticket_value_usd
+        description: Gross ticket value in USD.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: buyer_fee_usd
+        description: Buyer fee in USD.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: seller_fee_usd
+        description: Seller fee in USD.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"

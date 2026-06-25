@@ -1,0 +1,31 @@
+name: 'global_marketplace_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'global_marketplace_analytics'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+seed-paths: ["seeds"]
+
+target-path: "target"
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+models:
+  global_marketplace_analytics:
+    staging:
+      +materialized: view
+      +tags: ["staging", "source_standardization"]
+    intermediates:
+      +materialized: view
+      +tags: ["intermediate", "business_logic"]
+    marts:
+      +materialized: table
+      +tags: ["mart", "executive_decision_layer", "ai_ready"]

@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: int_event_daily_sales
+    description: Daily event-level demand, revenue, and buyer metrics.
+    columns:
+      - name: order_date
+        description: Purchase date.
+        data_tests:
+          - not_null
+
+      - name: event_id
+        description: Event identifier.
+        data_tests:
+          - not_null
+
+      - name: market_country_code
+        description: Market country code.
+        data_tests:
+          - not_null
+
+      - name: tickets_sold
+        description: Completed ticket quantity sold.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: gross_ticket_value_usd
+        description: Gross ticket value in USD.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: platform_fee_revenue_usd
+        description: Platform fee revenue from buyer and seller fees.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+  - name: int_event_supply_demand_28d
+    description: Event-market supply snapshot enriched with trailing 28-day demand and pricing signals.
+    columns:
+      - name: event_market_snapshot_key
+        description: Unique key for event, market, and snapshot date.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: snapshot_date
+        description: Listing snapshot date.
+        data_tests:
+          - not_null
+
+      - name: event_id
+        description: Event identifier.
+        data_tests:
+          - not_null
+
+      - name: days_to_event
+        description: Number of days between snapshot and event date.
+        data_tests:
+          - not_null
+
+      - name: tickets_available
+        description: Available ticket supply.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: tickets_sold_28d
+        description: Tickets sold in trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+
+      - name: platform_fee_revenue_usd_28d
+        description: Platform fee revenue in trailing 28 days.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
