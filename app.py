@@ -633,43 +633,15 @@ def apply_pricing_simulation(
 # Sidebar
 # ============================================================
 
+# Public portfolio mode: curated synthetic demo only
+data_source = "Demo sample"
+uploaded_csv = None
+table_fqn = DEFAULT_TABLE_FQN
+custom_sql = ""
+
 with st.sidebar:
-    st.markdown("## Data Source")
-
-    data_source = st.radio(
-        "Choose input mode",
-        ["Demo sample", "CSV upload", "BigQuery mart"],
-        index=0,
-    )
-
-    uploaded_csv = None
-    table_fqn = DEFAULT_TABLE_FQN
-    custom_sql = ""
-
-    if data_source == "CSV upload":
-        uploaded_csv = st.file_uploader(
-            "Upload exported mart CSV",
-            type=["csv"],
-            help="Upload a CSV exported from fct_event_marketplace_liquidity_daily.",
-        )
-
-    if data_source == "BigQuery mart":
-        table_fqn = st.text_input(
-            "BigQuery table FQN",
-            value=DEFAULT_TABLE_FQN,
-            help="Example: project.dataset.fct_event_marketplace_liquidity_daily",
-        )
-
-        with st.expander("Optional SQL override"):
-            custom_sql = st.text_area(
-                "Custom SQL",
-                value="",
-                height=140,
-                placeholder="SELECT * FROM `project.dataset.fct_event_marketplace_liquidity_daily`",
-            )
-
-    st.markdown("---")
     st.markdown("## Executive Filters")
+    st.caption("Public portfolio demo using synthetic data.")
 
 
 # ============================================================
