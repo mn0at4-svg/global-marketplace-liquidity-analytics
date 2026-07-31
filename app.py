@@ -745,6 +745,19 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+st.info(
+    """
+    **Try the simulator in 30 seconds**
+
+    1. Select an event or segment using the sidebar filters.
+    2. Open the Pricing Simulator tab.
+    3. Adjust price, demand, supply, or marketing assumptions.
+    4. Compare the baseline and simulated outcomes.
+
+    This public portfolio demo uses synthetic data only.
+    """
+)
+
 
 # ============================================================
 # KPI Overview
